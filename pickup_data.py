@@ -10,21 +10,14 @@ import shutil
 class DaylioDataPrep:
 
     def __init__(self, pickup_dir: str = Path.home() / "OneDrive/DaylioData") -> None:
-        self.selected_tables = [
-            'customMoods',
-            'tags',
-            'dayEntries',
-            'goals',
-            'prefs',
-            'tag_groups',
-            'goalEntries',
-        ]
         self.pickup_dir = pickup_dir
         self.expected_cwd = 'MoodDash'
         self.backup_name = datetime.today().strftime('backup_%Y_%m_%d.daylio')
         self.__set_cwd()
         self.data_dir = Path.cwd() / "data"
         self.json_path = self.data_dir / "daylio.json"
+        selected_tables_path = self.data_dir / 'tables_needed.txt'
+        self.selected_tables = selected_tables_path.read_text().split('\n')
 
     def __set_cwd(self):
         if Path.cwd().name != self.expected_cwd:
