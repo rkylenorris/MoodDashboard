@@ -39,47 +39,6 @@ def create_daylio_sql_tables():
     conn.close()
 
 
-def insert_mood_groups():
-    conn = sqlite3.connect('data/daylio.db')
-    cursor = conn.cursor()
-    mood_grps = [
-        {
-            "id": 1,
-            'name': 'The Best Days',
-            'value': 5
-        },
-        {
-            "id": 2,
-            'name': 'The Good Days',
-            'value': 4
-        },
-        {
-            "id": 3,
-            'name': 'The Meh Days',
-            'value': 3
-        },
-        {
-            "id": 4,
-            'name': 'The Bad Days',
-            'value': 2
-        },
-        {
-            "id": 5,
-            'name': 'The Worst Days',
-            'value': 1
-        },
-    ]
-    select_query = '''
-    INSERT INTO mood_groups (id, name, value)
-    VALUES (?, ?, ?)
-    '''
-    for grp in mood_grps:
-        cursor.execute(select_query, (grp['id'], grp['name'], grp['value']))
-
-    conn.commit()
-    conn.close()
-
-
 def insert_prefs(prefs_dict):
     conn = sqlite3.connect('data/daylio.db')
     cursor = conn.cursor()
