@@ -1,8 +1,14 @@
 # MOOD DASH
-### **work in progress!**
-***Project to create a PlotlyDash dash board using daylio app data***
+### Author: R. Kyle Norris
 
-***To be shared with the users mental health providers***
+---
+
+## **work in progress!**
+
+---
+Project to create a dashboard from daylio mood tracker app data,
+to be shared with the users' mental health providers.
+
 
 ---
 ## Project aims
