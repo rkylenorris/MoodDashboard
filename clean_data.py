@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+import json
 
 
 class InvalidDaylioTable(Exception):
@@ -69,7 +70,13 @@ def create_entry_tags(entries: DaylioTable, columns: list[ColumnInfo]):
     return DaylioTable('entry_tags', tags_df, columns)
 
 
-def create_mood_groups(columns: list[ColumnInfo]):
+def create_mood_groups(columns: list[ColumnInfo]) -> DaylioTable:
     mood_groups_path = Path.cwd() / "data" / "mood_groups.json"
     df = pd.read_json(mood_groups_path)
     return DaylioTable('mood_groups', df, columns)
+
+
+def get_table_info(table_name: str) -> list[ColumnInfo]:
+    table_info_path = Path.cwd() / 'data' / 'table_info.json'
+    json_data = json.loads(table_info_path.read_text())
+    return [ColumnInfo(**data) for data in json_data[table_name]]
