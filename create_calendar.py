@@ -16,7 +16,7 @@ def is_weekday(day: int):
         return False
 
 
-def create_calendar(start='2018-01-01', end=datetime.today().strftime('%Y-%m-%d')):
+def create_rolling_calendar(start='2018-01-01', end=datetime.today().strftime('%Y-%m-%d')):
     df = pd.DataFrame({"TimeStamp": pd.date_range(start, end)})
     df['Date'] = pd.to_datetime(df['TimeStamp'])
     df["Day"] = df.TimeStamp.apply(lambda x: x.to_pydatetime().date().strftime('%w'))
@@ -32,7 +32,5 @@ def create_calendar(start='2018-01-01', end=datetime.today().strftime('%Y-%m-%d'
 
 
 def write_calendar_to_db(conn):
-    df = create_calendar()
+    df = create_rolling_calendar()
     df.to_sql('calendar', conn, if_exists='replace', index=False)
-    conn.commit()
-    conn.close()
