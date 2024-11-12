@@ -51,9 +51,9 @@ db_conn = sqlite3.connect(str(db_path))
 for table in daylio_tables:
     table.to_sql(db_conn)
 
-insert_prefs(daylio_data['prefs'])
-
 write_calendar_to_db(db_conn)
 
 db_conn.commit()
 db_conn.close()
+
+insert_prefs(daylio_data['prefs'])
