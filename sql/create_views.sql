@@ -1,3 +1,9 @@
+DROP VIEW IF EXISTS v_activity_summary 
+DROP VIEW IF EXISTS v_entry_details 
+DROP VIEW IF EXISTS v_daily_avgs 
+DROP VIEW IF EXISTS v_sleep_summary 
+DROP VIEW IF EXISTS v_sleep_trend 
+
 
 CREATE VIEW v_activity_summary
 AS
