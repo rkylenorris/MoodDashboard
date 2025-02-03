@@ -11,7 +11,7 @@ class DaylioDataPrep:
 
     def __init__(self, pickup_dir: str = Path.home() / "OneDrive/DaylioData") -> None:
         self.pickup_dir = pickup_dir
-        self.expected_cwd = 'MoodDash'
+        self.expected_cwd = 'MoodDashboard'
         self.backup_name = datetime.today().strftime('backup_%Y_%m_%d.daylio')
         self.__set_cwd()
         self.data_dir = Path.cwd() / "data"

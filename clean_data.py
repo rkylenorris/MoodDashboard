@@ -25,8 +25,8 @@ class DaylioTable:
         self.__fix_dates()
         if self.name == 'customMoods':
             self.table['mood_value'] = 6 - self.table['mood_group_id']
-            for mood in self.table[(self.table['mood_group_id'] in ([2, 3, 4])) &
-                       (self.table['mood_group_order'] == 0)]:
+            for _, mood in self.table[(self.table['mood_group_id'].isin([2, 3, 4])) &
+                       (self.table['mood_group_order'] == 0)].iterrows():
                 match mood['mood_group_id']:
                     case 2:
                         mood['custom_name'] = 'Good'

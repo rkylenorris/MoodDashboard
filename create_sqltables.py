@@ -27,13 +27,13 @@ def create_daylio_sql_tables():
     ]
 
     for table in tables:
-        q_template = Template("DROP TABLE IF EXITS {{table_name}}")
+        q_template = Template("DROP TABLE IF EXISTS $table_name")
         query = q_template.substitute(table_name=table)
         cursor.execute(query)
 
     create_tables_path = Path.cwd() / 'sql' / 'create_tables.sql'
 
-    cursor.execute(create_tables_path.read_text())
+    cursor.executescript(create_tables_path.read_text())
 
     conn.commit()
     conn.close()
