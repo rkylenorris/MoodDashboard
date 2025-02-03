@@ -1,0 +1,1 @@
+from .db_init import create_tables, create_views, insert_prefs
