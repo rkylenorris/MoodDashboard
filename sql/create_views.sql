@@ -1,8 +1,8 @@
-DROP VIEW IF EXISTS v_activity_summary 
-DROP VIEW IF EXISTS v_entry_details 
-DROP VIEW IF EXISTS v_daily_avgs 
-DROP VIEW IF EXISTS v_sleep_summary 
-DROP VIEW IF EXISTS v_sleep_trend 
+DROP VIEW IF EXISTS v_activity_summary ;
+DROP VIEW IF EXISTS v_entry_details ;
+DROP VIEW IF EXISTS v_daily_avgs ;
+DROP VIEW IF EXISTS v_sleep_summary ;
+DROP VIEW IF EXISTS v_sleep_trend ;
 
 
 CREATE VIEW v_activity_summary
@@ -18,7 +18,7 @@ LEFT JOIN tag_groups AS tg ON t.id_tag_group = tg.id
 where date(de.date) > date('now', '-90 days')
 group by tg.name, t.name
 having count > 0
-order by [group], count desc
+order by [group], count desc;
 
 CREATE VIEW v_entry_details
 AS
@@ -35,7 +35,7 @@ SELECT
     join customMoods as cm on de.mood = cm.id
     join mood_groups as mg on cm.mood_group_id = mg.id
     where date(de.date) > date('now', '-90 days')
-    order by de.date, de.datetime
+    order by de.date, de.datetime;
 
 CREATE VIEW v_daily_avgs
 AS
@@ -48,7 +48,7 @@ FROM
     ,mood_value
     FROM v_entry_details)
 group by day
-order by day desc
+order by day desc;
 
 
 CREATE VIEW v_sleep_summary
@@ -62,7 +62,7 @@ LEFT JOIN tags AS t ON et.tag = t.id
 LEFT JOIN tag_groups AS tg ON t.id_tag_group = tg.id
 where date(de.date) > date('now', '-90 days')
 AND tg.name = 'Sleep'
-group by t.name
+group by t.name;
 
 CREATE VIEW v_sleep_trend
 AS
@@ -79,4 +79,4 @@ FROM dayEntries AS de
 LEFT JOIN entry_tags as et on de.id = et.entry_id
 LEFT JOIN tags AS t ON et.tag = t.id
 where  t.id in (75, 76, 77, 152)
-group by de.date, t.name
+group by de.date, t.name;

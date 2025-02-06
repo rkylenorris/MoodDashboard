@@ -66,4 +66,4 @@ insert_prefs(daylio_data['prefs'], db_conn)
 # create views for easy grabbing of stats
 create_views()
 
-logger.info(f"Process ended, runtime: {(datetime.now() - start_time).total_seconds}s")
+logger.info(f"Process ended, runtime: {(datetime.now() - start_time).total_seconds()}s")

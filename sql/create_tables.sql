@@ -1,13 +1,13 @@
-DROP TABLE IF EXISTS customMoods 
-DROP TABLE IF EXISTS tags 
-DROP TABLE IF EXISTS dayEntries 
-DROP TABLE IF EXISTS goals 
-DROP TABLE IF EXISTS prefs 
-DROP TABLE IF EXISTS tag_groups 
-DROP TABLE IF EXISTS goalEntries 
-DROP TABLE IF EXISTS calendar 
-DROP TABLE IF EXISTS mood_groups 
-DROP TABLE IF EXISTS entry_tags     
+DROP TABLE IF EXISTS customMoods; 
+DROP TABLE IF EXISTS tags ;
+DROP TABLE IF EXISTS dayEntries ;
+DROP TABLE IF EXISTS goals ;
+DROP TABLE IF EXISTS prefs ;
+DROP TABLE IF EXISTS tag_groups ;
+DROP TABLE IF EXISTS goalEntries ;
+DROP TABLE IF EXISTS calendar ;
+DROP TABLE IF EXISTS mood_groups ;
+DROP TABLE IF EXISTS entry_tags   ;  
     
     
     

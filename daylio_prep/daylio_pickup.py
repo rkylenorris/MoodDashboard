@@ -80,7 +80,7 @@ class DaylipPickup:
         if self.json_path.exists():
             os.remove(self.json_path)
         logger.info(f'Saving decoded data as json: {self.json_path}')
-        with open(str(self.json_path), "W", encoding='utf-8') as j:
+        with open(str(self.json_path), "w", encoding='utf-8') as j:
             json.dump(selected_tables_data, j, indent=4)
     
     def archive_json(self):

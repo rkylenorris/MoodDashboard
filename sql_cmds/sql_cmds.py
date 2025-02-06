@@ -16,14 +16,16 @@ def execute_sql_command(conn: sqlite3.Connection, command: str, *args):
     with conn:
         cursor = conn.cursor()
         if args:
-            cursor.execute(command, args)
+            cursor.execute(command, *args)
         else:
             cursor.execute(command)
 
 def execute_sql_script(conn: sqlite3.Connection, script_path: str):
     with conn:
+        script = Path(script_path)
+        logger.info(f"Executing script: {script.name}")
         cursor = conn.cursor()
-        script_text = Path(script_path).read_text()
+        script_text = script.read_text()
         cursor.executescript(script_text)
     
 def read_sql_view_to_df(conn: sqlite3.Connection, view_name: str) -> pd.DataFrame:
