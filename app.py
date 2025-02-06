@@ -1,11 +1,14 @@
 from daylio_prep import DaylipPickup, DaylioCleaner, ColumnInfo, create_entry_tags, create_mood_groups, get_table_info
-from sql_cmds import create_tables, create_db_conn, insert_prefs, create_views
+from sql_cmds import create_tables, create_db_conn, insert_prefs, create_views, read_sql_view_to_df
 from pathlib import Path
 import pandas as pd
 import logging
 import logging.config
 import json
+import plotly.express as px
 from datetime import datetime
+from dash import dcc, html, dash
+from dash.dependencies import Input, Output
 
 start_time = datetime.now()
 
@@ -67,3 +70,18 @@ insert_prefs(daylio_data['prefs'], db_conn)
 create_views()
 
 logger.info(f"Process ended, runtime: {(datetime.now() - start_time).total_seconds()}s")
+
+# creating graphs
+
+daily_avgs = read_sql_view_to_df(create_db_conn(), "v_daily_avgs")
+fig = px.line(daily_avgs, x='day', y='avg_mood_value', title="Daily Average Mood Over 90 Days")
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    html.H1("Mood Dashboard"),
+    dcc.Graph(id='mood-trend', figure=fig)
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)

@@ -32,4 +32,5 @@ def read_sql_view_to_df(conn: sqlite3.Connection, view_name: str) -> pd.DataFram
     logger.info(f"Retreiving data from view {view_name}...")
     query = f"SELECT * FROM {view_name}"
     df = pd.read_sql_query(query, conn)
+    conn.close()
     return df
