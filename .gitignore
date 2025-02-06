@@ -179,3 +179,4 @@ cython_debug/
 data/archive
 data/daylio.db
 data/backup.daylio
+data/daylio.json
