@@ -2,6 +2,21 @@ from daylio_prep import DaylipPickup, DaylioCleaner, ColumnInfo, create_entry_ta
 from sql_cmds import create_tables, create_db_conn, insert_prefs, create_views
 from pathlib import Path
 import pandas as pd
+import logging
+import logging.config
+import json
+from datetime import datetime
+
+start_time = datetime.now()
+
+with open('log_config.json', 'r') as l:
+    log_config = json.load(l)
+
+logging.config.dictConfig(log_config)
+
+logger = logging.getLogger(__name__)
+
+logger.info("Process start...")
 
 # get backup, extract to data directory, decode to json, save, and archive json
 pickup = DaylipPickup()
@@ -50,3 +65,5 @@ insert_prefs(daylio_data['prefs'], db_conn)
 
 # create views for easy grabbing of stats
 create_views()
+
+logger.info(f"Process ended, runtime: {(datetime.now() - start_time).total_seconds}s")
