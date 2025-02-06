@@ -1,5 +1,5 @@
 from daylio_prep import DaylipPickup, DaylioCleaner, ColumnInfo, create_entry_tags, create_mood_groups, get_table_info
-from sql_cmds import create_tables, create_db_conn, insert_prefs
+from sql_cmds import create_tables, create_db_conn, insert_prefs, create_views
 from pathlib import Path
 import pandas as pd
 
@@ -24,9 +24,7 @@ for table in tables:
         df = pd.DataFrame(daylio_data[table])
         column_info = get_table_info(table)
         daylio_table = DaylioCleaner(table, df, column_info)
-        daylio_tables.append(
-            daylio_table
-        )
+        daylio_tables.append(daylio_table)
         
         if daylio_table.name == 'dayEntries':
             columns = get_table_info('entry_tags')
@@ -40,6 +38,7 @@ daylio_tables.append(
     )
 )
 
+# load sql db with daylio data
 db_conn = create_db_conn()
 
 for table in daylio_tables:
@@ -48,3 +47,6 @@ for table in daylio_tables:
 db_conn.commit()
 
 insert_prefs(daylio_data['prefs'], db_conn)
+
+# create views for easy grabbing of stats
+create_views()
