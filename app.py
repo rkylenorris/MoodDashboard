@@ -6,9 +6,12 @@ import logging
 import logging.config
 import json
 import plotly.express as px
-from datetime import datetime
+import dash_bootstrap_components as dbc
+from datetime import datetime, timedelta
 from dash import dcc, html, dash
 from dash.dependencies import Input, Output
+from plotly.graph_objects import Figure
+import plotly.io as pio
 
 start_time = datetime.now()
 
@@ -74,12 +77,36 @@ logger.info(f"Process ended, runtime: {(datetime.now() - start_time).total_secon
 # creating graphs
 
 daily_avgs = read_sql_view_to_df(create_db_conn(), "v_daily_avgs")
-fig = px.line(daily_avgs, x='day', y='avg_mood_value', title="Daily Average Mood Over 90 Days")
+daily_avgs['day'] = pd.to_datetime(daily_avgs['day'])
+
+# fig = px.line(daily_avgs, x='day', y='avg_mood_value', title="Daily Average Mood Over 90 Days", template='plotly_dark', trendline='ols')
+
+
+# fig.update_yaxes(range=[0, 5])
+colors = px.colors.qualitative.Dark2
+fig = px.scatter(daily_avgs, x='day', y='avg_mood_value',
+                 template='plotly_dark',
+                 color_discrete_sequence=colors,
+                 trendline='ols',
+                 title="Avg Mood Per Day (Past 90 Days)")
+
+# f = fig.full_figure_for_development(warn=False)
+fig.update_traces(mode='lines')
+fig.data[-1].line.color = 'red'
+
+today = datetime.today()
+ninety_days_ago = today - timedelta(days=90)
+today_str = today.strftime('%Y-%m-%d')
+ninety_str = ninety_days_ago.strftime('%Y-%m-%d')
+date_range = f"Date Range: {ninety_str} - {today_str}"
 
 app = dash.Dash(__name__)
 
-app.layout = html.Div([
-    html.H1("Mood Dashboard"),
+app.layout = dbc.Container([
+    dbc.Container([
+        html.H1('Mood Dash'),
+        html.H4(date_range)
+        ]),
     dcc.Graph(id='mood-trend', figure=fig)
 ])
 
