@@ -78,11 +78,9 @@ logger.info(f"Process ended, runtime: {(datetime.now() - start_time).total_secon
 
 daily_avgs = read_sql_view_to_df(create_db_conn(), "v_daily_avgs")
 daily_avgs['day'] = pd.to_datetime(daily_avgs['day'])
+activity_summary = read_sql_view_to_df(create_db_conn(), "v_activity_summary")
 
-# fig = px.line(daily_avgs, x='day', y='avg_mood_value', title="Daily Average Mood Over 90 Days", template='plotly_dark', trendline='ols')
 
-
-# fig.update_yaxes(range=[0, 5])
 colors = px.colors.qualitative.Dark2
 fig = px.scatter(daily_avgs, x='day', y='avg_mood_value',
                  template='plotly_dark',
@@ -90,9 +88,11 @@ fig = px.scatter(daily_avgs, x='day', y='avg_mood_value',
                  trendline='ols',
                  title="Avg Mood Per Day (Past 90 Days)")
 
-# f = fig.full_figure_for_development(warn=False)
+
 fig.update_traces(mode='lines')
 fig.data[-1].line.color = 'red'
+
+fig_activity = px.bar(activity_summary, x='activity', y='count', color='group', title='Activity Summary Over 90 Days')
 
 today = datetime.today()
 ninety_days_ago = today - timedelta(days=90)
@@ -107,7 +107,10 @@ app.layout = dbc.Container([
         html.H1('Mood Dash'),
         html.H4(date_range)
         ]),
-    dcc.Graph(id='mood-trend', figure=fig)
+    dbc.Container([
+        dcc.Graph(id='mood-trend', figure=fig),
+        dcc.Graph(id='activity-summary', figure=fig_activity)
+    ])
 ])
 
 if __name__ == '__main__':
