@@ -18,7 +18,8 @@ LEFT JOIN tag_groups AS tg ON t.id_tag_group = tg.id
 where date(de.date) > date('now', '-90 days')
 group by tg.name, t.name
 having count > 0
-order by [group], count desc;
+order by count desc, [group]
+limit 20;
 
 CREATE VIEW v_entry_details
 AS
