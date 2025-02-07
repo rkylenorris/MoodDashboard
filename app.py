@@ -88,11 +88,11 @@ fig = px.scatter(daily_avgs, x='day', y='avg_mood_value',
                  trendline='ols',
                  title="Avg Mood Per Day (Past 90 Days)")
 
-
+fig.update_layout(yaxis_range=[1, 5])
 fig.update_traces(mode='lines')
 fig.data[-1].line.color = 'red'
 
-fig_activity = px.bar(activity_summary, x='activity', y='count', color='group', title='Activity Summary Over 90 Days')
+fig_activity = px.bar(activity_summary, x='activity', y='count', color='group', title='Activity Summary Over 90 Days', template='plotly_dark')
 
 today = datetime.today()
 ninety_days_ago = today - timedelta(days=90)
@@ -100,18 +100,21 @@ today_str = today.strftime('%Y-%m-%d')
 ninety_str = ninety_days_ago.strftime('%Y-%m-%d')
 date_range = f"Date Range: {ninety_str} - {today_str}"
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+image_path = app.get_asset_url('logo.png')
 
 app.layout = dbc.Container([
     dbc.Container([
-        html.H1('Mood Dash'),
-        html.H4(date_range)
-        ]),
+        # html.H1('Mood Dash'),
+        html.Img(src=image_path, height=275),
+        html.H4(date_range, style={'color': 'grey'})
+        ], style={'textAlign': 'center'}),
     dbc.Container([
         dcc.Graph(id='mood-trend', figure=fig),
         dcc.Graph(id='activity-summary', figure=fig_activity)
     ])
-])
+], style={'backgroundColor': 'black'})
 
 if __name__ == '__main__':
     app.run_server(debug=True)
